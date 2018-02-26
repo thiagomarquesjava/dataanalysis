@@ -2,6 +2,7 @@ package com.dataanalysis.controller;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -57,30 +58,12 @@ public class FileController {
 	public void executeProcess() throws Exception {
 		startLists();
 		for (File file : readFilesFromPath()) {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-			stepConvert(bufferedReader);
+			BufferedReader buffReader = new BufferedReader(new FileReader(file));
+			stepConvert(buffReader);
 			stepWrite(file.getName());
-			bufferedReader.close();
+			buffReader.close();
 			file.delete();
 		}
-	}
-
-	private void stepWrite(String fileName) throws Exception {
-		StringBuffer buff = new StringBuffer();
-		buff.append("Quantidade de clientes no arquivo de entrada: " + getClients().size() + "\n");
-		buff.append("Quantidade de vendedor no arquivo de entrada: "+ getSellers().size() + "\n");
-		buff.append("ID da venda mais cara: " + getTheBestSale().getId() + "\n");
-		buff.append("O pior vendedor já: " + getTheWorstSeller().getName() + "\n");
-		byte[] buffAsBytes = buff.toString().getBytes();
-		FileOutputStream outputStream = null; 
-		File file = new File(getFilepathOut().concat(fileName).replace(".dat", ".done.dat"));
-		outputStream = new FileOutputStream(file);
-		if (!file.exists()) {
-			file.createNewFile();
-		}
-		outputStream.write(buffAsBytes);
-		outputStream.flush();
-		outputStream.close();
 	}
 
 	private void stepConvert(BufferedReader bufferedReader) throws IOException {
@@ -89,7 +72,34 @@ public class FileController {
 			convertLine(line, line.substring(0, 3));
 		}
 	}
+	
+	private void stepWrite(String fileName) throws Exception {
+		StringBuffer buff = new StringBuffer();
+		defineTextOfFile(buff);
+		byte[] buffAsBytes = buff.toString().getBytes();
+		FileOutputStream outputStream = buildAFileToWrite(fileName);
+		outputStream.write(buffAsBytes);
+		outputStream.flush();
+		outputStream.close();
+	}
 
+	private void defineTextOfFile(StringBuffer buff) {
+		buff.append("Quantidade de clientes no arquivo de entrada: " + getClients().size() + "\n");
+		buff.append("Quantidade de vendedor no arquivo de entrada: "+ getSellers().size() + "\n");
+		buff.append("ID da venda mais cara: " + getTheBestSale().getId() + "\n");
+		buff.append("O pior vendedor já: " + getTheWorstSeller().getName());
+	}
+
+	private FileOutputStream buildAFileToWrite(String fileName) throws FileNotFoundException, IOException {
+		FileOutputStream outputStream = null; 
+		File file = new File(getFilepathOut().concat(fileName).replace(".dat", ".done.dat"));
+		outputStream = new FileOutputStream(file);
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+		return outputStream;
+	}
+	
 	private void startLists() {
 		this.sellers = new ArrayList<Seller>();
 		this.clients = new ArrayList<Client>();

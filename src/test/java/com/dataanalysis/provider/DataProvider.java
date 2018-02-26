@@ -50,13 +50,15 @@ public class DataProvider {
 	
 	private static List<String> prepareLinesToReturn(String filename) throws Exception {
 		File file = new File(filename);
-		BufferedReader buff = new BufferedReader(new FileReader(file));
+		FileReader fileReader = new FileReader(file);
+		BufferedReader buff = new BufferedReader(fileReader);
 		List<String> lines = new ArrayList<String>();
 		lines.add(buff.readLine());
 		lines.add(buff.readLine());
 		lines.add(buff.readLine());
 		lines.add(buff.readLine());
 		buff.close();
+		fileReader.close();
 		file.delete();
 		return lines;
 	}
