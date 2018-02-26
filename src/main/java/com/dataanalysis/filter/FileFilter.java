@@ -2,15 +2,14 @@ package com.dataanalysis.filter;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class FileFilter {
 
 	private List<File> listOfFiles;
 	
-	public FileFilter(File[] files) {
-		this.listOfFiles = Arrays.asList(files);
+	public FileFilter(List<File> files) {
+		this.listOfFiles = files;
 	}
 	
 	public List<File> getAcceptFiles() {

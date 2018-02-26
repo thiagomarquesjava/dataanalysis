@@ -1,7 +1,11 @@
 package com.dataanalysis.controller;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import com.dataanalysis.model.Client;
+import com.dataanalysis.model.Sales;
+import com.dataanalysis.model.Seller;
 
 import junit.framework.TestCase;
 
@@ -16,11 +20,17 @@ public class FileControllerTest extends TestCase {
 		assertEquals(FILEPATH_OUT, file.getFilepathOut());
 	}
 	
-	public void testIfJustReadADatFiles() {
+	public void testIfReadAFileAndAQuantityOfEntitiesIsCorrect() throws IOException {
 		FileController fileController = FileController.getInstance();
-		List<File> files = fileController.readFilesFromPath();
-		assertNotNull(files);
-		assertEquals(2, files.size());
+		fileController.executeProcess();
+		List<Client> clients = fileController.getClients();
+		assertEquals(4, clients.size());
+	
+		List<Seller> sellers = fileController.getSellers();
+		assertEquals(4, sellers.size());
+
+		List<Sales> sales = fileController.getSales();
+		assertEquals(4, sales.size());
 	}
 	
 }
