@@ -1,4 +1,4 @@
-package com.dataanalysis.arq.controller;
+package com.dataanalysis.arq.forTests;
 
 import com.dataanalysis.controller.FileController;
 
@@ -11,12 +11,12 @@ public class FileControllerStub extends FileController {
 
 	@Override
 	public String getFilepathIn() {
-		return "";
+		return "D:\\workspace\\tests\\dataanalysis\\src\\test\\resources\\data\\in\\";
 	}
 
 	@Override
 	public String getFilepathOut() {
-		return "";
+		return "D:\\workspace\\tests\\dataanalysis\\src\\test\\resources\\data\\out\\";
 	}
 
 }
